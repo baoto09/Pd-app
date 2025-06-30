@@ -57,7 +57,7 @@ if uploaded_file:
                 {"selector": "th", "props": [("text-align", "center")]},
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
-        except Exception as e:
-            st.error(f"⚠️ Lỗi: {e}")
+except Exception as e:
+    st.error(f"⚠️ Lỗi: {e}")
 else:
     st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
