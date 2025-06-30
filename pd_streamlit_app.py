@@ -39,13 +39,14 @@ if uploaded_file:
         df = pd.read_excel(uploaded_file)
         Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
         formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
-        st.info(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
+        st.info(f"Pd values after {time_required}: **{formatted_Pd} W**")
 
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ None matching batteries.")
         else:
             st.success("✅ Appropriate batteries:")
+            st.markdown(result_df.to_html(), unsafe_allow_html=True)
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
@@ -58,7 +59,6 @@ if uploaded_file:
             ]).hide(axis="index")
 
             # Hiển thị trong khung màu xanh
-            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
