@@ -38,27 +38,40 @@ if uploaded_file:
     try:
         df = pd.read_excel(uploaded_file)
         Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
-        formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
-        st.success(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
+        formatted_Pd = f"{round(Pd):,}".replace(",", ".")
+        
+        # KẾT QUẢ Pd trong khung màu
+        st.markdown(f"""
+            <div style='background-color:#eaffea;padding:15px;border-radius:10px;'>
+                <h3 style='color:#2e8b57;'>🔸 Required Discharge Power (Pd): <span style="color:#000;">{formatted_Pd} W</span></h3>
+                <p style="margin:0;">Time requirement: <strong>{time_required}</strong></p>
+            </div>
+        """, unsafe_allow_html=True)
 
+        # Tìm model phù hợp
         model_phu_hop = model(df, Pd, time_required, margin)
-        if model_phu_hop is None or model_phu_hop.empty:
-            st.error("❌ None matching batteries.")
-        else:
-            st.info("✅ Appropriate batteries:")
-            result_df = model_phu_hop.reset_index()
-            result_df.columns = ["Batteries", "Power (W)"]
-            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-            result_df.insert(0, "No.", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
 
-            # Tạo bảng HTML với style căn giữa
+        if model_phu_hop is None or model_phu_hop.empty:
+            st.error("❌ No matching battery models found.")
+        else:
+            # Format bảng kết quả
+            result_df = model_phu_hop.reset_index()
+            result_df.columns = ["Model", "Power (W)"]
+            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+            result_df.insert(0, "No.", range(1, len(result_df) + 1))
+
             styled_table = result_df.style.set_table_styles([
                 {"selector": "th", "props": [("text-align", "center")]},
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
 
-            # Hiển thị trong khung màu xanh
+            # HIỂN THỊ TRONG KHUNG XANH BIỂN
+            st.markdown("""
+                <div style='background-color:#e6f4ff;padding:15px;border-radius:10px;'>
+                    <h4 style='color:#005b99;'>✅ Matching Battery Models:</h4>
+            """, unsafe_allow_html=True)
             st.markdown(styled_table.to_html(), unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
