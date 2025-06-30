@@ -43,21 +43,23 @@ if uploaded_file:
 
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
-            st.error("❌ None matching batteries.")
-        else:
-            with st.info("", icon="✅"):
-            st.markdown("### Appropriate batteries:")  # Dòng tiêu đề trong khung
-            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
-            result_df = model_phu_hop.reset_index()
-            result_df.columns = ["Batteries", "Power (W)"]
-            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-            result_df.insert(0, "No.", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
+    st.error("❌ None matching batteries.")
+else:
+    # Chuẩn bị bảng
+    result_df = model_phu_hop.reset_index()
+    result_df.columns = ["Batteries", "Power (W)"]
+    result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+    result_df.insert(0, "No.", range(1, len(result_df) + 1))
 
-            # Tạo bảng HTML với style căn giữa
-            styled_table = result_df.style.set_table_styles([
-                {"selector": "th", "props": [("text-align", "center")]},
-                {"selector": "td", "props": [("text-align", "center")]}
-            ]).hide(axis="index")
+    styled_table = result_df.style.set_table_styles([
+        {"selector": "th", "props": [("text-align", "center")]},
+        {"selector": "td", "props": [("text-align", "center")]}
+    ]).hide(axis="index")
+
+    # ✅ DÒNG QUAN TRỌNG NHẤT: cả tiêu đề và bảng nằm chung trong st.info()
+    with st.info("", icon="✅"):
+        st.markdown("### Appropriate batteries:")
+        st.markdown(styled_table.to_html(), unsafe_allow_html=True)
 
 
     except Exception as e:
