@@ -46,21 +46,17 @@ if uploaded_file:
             st.error("❌ None matching batteries.")
         else:
             # Chuẩn bị bảng
-            st.info("✅ Appropriate batteries:")
-            result_df = model_phu_hop.reset_index()
-            result_df.columns = ["Batteries", "Power (W)"]
-            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-            result_df.insert(0, "No.", range(1, len(result_df) + 1))
-        
-            styled_table = result_df.style.set_table_styles([
-                {"selector": "th", "props": [("text-align", "center")]},
-                {"selector": "td", "props": [("text-align", "center")]}
-            ]).hide(axis="index")
-    
-        # ✅ DÒNG QUAN TRỌNG NHẤT: cả tiêu đề và bảng nằm chung trong st.info()
             with st.info("✅ Appropriate batteries:"):
-                st.markdown("### Appropriate batteries:")
                 st.markdown(styled_table.to_html(), unsafe_allow_html=True)
+                result_df = model_phu_hop.reset_index()
+                result_df.columns = ["Batteries", "Power (W)"]
+                result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+                result_df.insert(0, "No.", range(1, len(result_df) + 1))
+            
+                styled_table = result_df.style.set_table_styles([
+                    {"selector": "th", "props": [("text-align", "center")]},
+                    {"selector": "td", "props": [("text-align", "center")]}
+                ]).hide(axis="index")
 
 
     except Exception as e:
