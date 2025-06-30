@@ -25,7 +25,7 @@ st.markdown("<p style='color: red;'>❗Input parameters and upload the compiled 
 with st.sidebar:
     st.markdown(
         """
-        <div style="text-align: center; margin-bottom: 10px;">
+        <div style="text-align: center;">
             <img src="Picture1.png" width="100">
         </div>
         """,
