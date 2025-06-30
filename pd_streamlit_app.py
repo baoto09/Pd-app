@@ -50,7 +50,6 @@ if uploaded_file:
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
             result_df.insert(0, "No.", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
-            st.markdown(result_df.to_html(), unsafe_allow_html=True)
             # Tạo bảng HTML với style căn giữa
             styled_table = result_df.style.set_table_styles([
                 {"selector": "th", "props": [("text-align", "center")]},
@@ -58,7 +57,7 @@ if uploaded_file:
             ]).hide(axis="index")
 
             # Hiển thị trong khung màu xanh
-
+            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
 else:
