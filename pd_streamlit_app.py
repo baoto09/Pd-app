@@ -42,14 +42,6 @@ if uploaded_file:
         st.success(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
 
         model_phu_hop = model(df, Pd, time_required, margin)
-        if uploaded_file:
-    try:
-        df = pd.read_excel(uploaded_file)
-        Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
-        formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
-        st.success(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
-
-        model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ None matching batteries.")
         else:
@@ -67,11 +59,6 @@ if uploaded_file:
 
             # Hiển thị trong khung màu xanh
             st.markdown(styled_table.to_html(), unsafe_allow_html=True)
-
-    except Exception as e:
-        st.error(f"⚠️ Lỗi khi xử lý file: {e}")
-else:
-    st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
 
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
