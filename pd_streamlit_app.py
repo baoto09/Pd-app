@@ -19,8 +19,8 @@ def model(df, Pd, time_required, margin):
 
 # Giao diện Streamlit
 st.set_page_config(page_title="🔋 Calculate Pd & Find Model", layout="centered")
-st.title("🔋 Calculate Pd & Find appropriate Batteries")
-st.markdown("Input parameters and upload the compiled Excel file for calculation.")
+st.title("<h1 style='color: limegreen;'>🔋 Calculate Pd & Find appropriate Batteries</h1>", unsafe_allow_html=True)
+st.markdown("❗ Input parameters and upload the compiled Excel file for calculation.")
 
 with st.sidebar:
     st.header("🧮 Enter parameters")
