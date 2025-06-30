@@ -39,16 +39,16 @@ if uploaded_file:
         df = pd.read_excel(uploaded_file)
         Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
         formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
-        st.success(f"🔸 Pd cần thiết sau {time_required} là: **{formatted_Pd} W**")
+        st.success(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
 
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
-            st.error("❌ Không có model nào phù hợp với yêu cầu.")
+            st.error("❌ None batteries matched with requirements.")
         else:
             # Tạo bảng kết quả có STT
             result_df = model_phu_hop.reset_index()
-            result_df.columns = ["Model", "Công suất (W)"]
-            result_df["Công suất (W)"] = result_df["Công suất (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+            result_df.columns = ["Batteries", "Power (W)"]
+            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
             result_df.insert(0, "STT", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
 
             # Tạo bảng HTML với style căn giữa
@@ -58,7 +58,7 @@ if uploaded_file:
             ]).hide(axis="index")
 
             # Hiển thị bảng trong khung xanh biển
-            with st.info("✅ Các model phù hợp:", icon="✅"):
+            with st.info("✅ Appropriate batteries:", icon="✅"):
                 st.markdown(styled_table.to_html(), unsafe_allow_html=True)
     except Exception as e:
         st.error(f"⚠️ Lỗi: {e}")
