@@ -45,7 +45,9 @@ if uploaded_file:
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ None matching batteries.")
         else:
-            st.info("✅ Appropriate batteries:")
+            with st.info("", icon="✅"):
+            st.markdown("### Appropriate batteries:")  # Dòng tiêu đề trong khung
+            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
@@ -57,8 +59,6 @@ if uploaded_file:
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
 
-            # Hiển thị trong khung màu xanh
-            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
