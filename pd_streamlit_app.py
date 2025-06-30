@@ -60,7 +60,7 @@ if uploaded_file:
 
 # Hiển thị bảng trong khung xanh biển
             with st.info("✅ Appropriate batteries:"):
-                st.markdown(result_df.to_html(), unsafe_allow_html=True)
+                st.markdown(styled_table.to_html(), unsafe_allow_html=True)
     except Exception as e:
         st.error(f"⚠️ Lỗi: {e}")
 else:
