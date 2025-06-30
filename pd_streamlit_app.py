@@ -41,8 +41,8 @@ if uploaded_file:
         formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
         st.markdown(
             f"""
-            <div style="background-color:#007BFF;padding:15px;border-radius:10px;">
-                <p style="color:white;font-size:18px;">
+            <div style="background-color:#007BFF;padding:15px;">
+                <p style="color:white;font-size:13px;">
                     🔸 Pd values after {time_required}: <b>{formatted_Pd} W</b>
                 </p>
             </div>
@@ -56,7 +56,7 @@ if uploaded_file:
             with st.container():
                 st.markdown(
                     """
-                    <div style="background-color:#28a745;padding:15px;border-radius:10px;">
+                    <div style="background-color:#28a745;padding:15px;">
                         <p style="color:white;font-size:18px;font-weight:bold;margin-bottom:10px;">✅ Appropriate batteries:</p>
                     """, unsafe_allow_html=True
                 )
@@ -73,8 +73,6 @@ if uploaded_file:
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
 
-            # Hiển thị trong khung màu xanh
-            st.markdown(styled_table.to_html(), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi khi xử lý file: {e}")
