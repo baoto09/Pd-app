@@ -58,11 +58,6 @@ if uploaded_file:
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
 
-            # Hiển thị bảng trong khung xanh biển
-        with st.info("✅ Appropriate batteries:", icon="✅"):
-             st.markdown(styled_table.to_html(), unsafe_allow_html=True)
-    
-    except Exception as e:
-        st.error(f"⚠️ Lỗi: {e}")
+
 else:
     st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
