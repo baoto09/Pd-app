@@ -39,13 +39,29 @@ if uploaded_file:
         df = pd.read_excel(uploaded_file)
         Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
         formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
-        st.success(f"🔸 Pd values after {time_required}: **{formatted_Pd} W**")
+        st.markdown(
+            f"""
+            <div style="background-color:#007BFF;padding:15px;border-radius:10px;">
+                <p style="color:white;font-size:18px;">
+                    🔸 Pd values after {time_required}: <b>{formatted_Pd} W</b>
+                </p>
+            </div>
+            """, unsafe_allow_html=True
+        )
 
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ None matching batteries.")
         else:
-            st.info("✅ Appropriate batteries:")
+            with st.container():
+                st.markdown(
+                    """
+                    <div style="background-color:#28a745;padding:15px;border-radius:10px;">
+                        <p style="color:white;font-size:18px;font-weight:bold;margin-bottom:10px;">✅ Appropriate batteries:</p>
+                    """, unsafe_allow_html=True
+                )
+                st.markdown(styled_table.to_html(), unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)  # đóng div
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
