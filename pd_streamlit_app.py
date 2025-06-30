@@ -57,5 +57,5 @@ if uploaded_file:
                 {"selector": "th", "props": [("text-align", "center")]},
                 {"selector": "td", "props": [("text-align", "center")]}
             ]).hide(axis="index")
-
-            st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
+else:
+     st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
