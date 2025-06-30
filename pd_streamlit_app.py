@@ -15,37 +15,41 @@ def model(df, Pd, time_required, margin):
         return None
     row_values = row.drop(columns='Time').iloc[0]
     model_phu_hop = row_values[(row_values >= Pd) & (row_values <= Pd + margin)]
-    return model_phu_hop
+    return model_phu_hop.round(0)  # Làm tròn về hàng đơn vị
 
 # Giao diện Streamlit
-st.set_page_config(page_title="🔋 Tính Pd & Tìm Model", layout="centered")
-st.title("🔋 Tính Pd & Tìm model pin phù hợp")
-st.markdown("Nhập thông số và tải lên file Excel tổng hợp để tính toán.")
+st.set_page_config(page_title="🔋 Calculate Pd & Find Model", layout="centered")
+st.title("🔋 Calculate Pd & Find appropriate Batteries")
+st.markdown("Input parameters and upload the compiled Excel file for calculation.")
 
 with st.sidebar:
-    st.header("🧮 Nhập thông số")
-    P_load = st.number_input("🔢 Công suất tải (P_load)", value=180000)
-    FP = st.number_input("⚙️ Hệ số tải (FP)", value=0.7)
-    efficiency = st.number_input("⚡ Hiệu suất", value=0.98)
-    num_batteries = st.number_input("🔋 Số lượng pin", value=50)
-    total_strings = st.number_input("🔗 Số chuỗi pin (total strings)", value=1.0)
-    margin = st.number_input("📏 Biên độ trên (W)", value=300)
-    time_required = st.text_input("⏱️ Thời gian xả (vd: 10min)", value="10min")
+    st.header("🧮 Enter parameters")
+    P_load = st.number_input("🔢 Power Load", value=180000)
+    FP = st.number_input("⚙️ Output Power Factor", value=0.7)
+    efficiency = st.number_input("⚡ Efficiency", value=0.98)
+    num_batteries = st.number_input("🔋 Total batteries", value=50)
+    total_strings = st.number_input("🔗 Total strings", value=1.0)
+    margin = st.number_input("📏 Margin (W)", value=300)
+    time_required = st.text_input("⏱️ Time (vd: 10min)", value="10min")
 
-uploaded_file = st.file_uploader("📁 Tải lên file Excel tổng hợp", type=["xlsx"])
+uploaded_file = st.file_uploader("📁 Upload file Excel", type=["xlsx"])
 
 if uploaded_file:
     try:
         df = pd.read_excel(uploaded_file)
         Pd = tinh_Pd(P_load, FP, efficiency, num_batteries, total_strings)
-        st.success(f"🔸 Pd cần thiết sau {time_required} là: **{Pd:.2f} W**")
+        formatted_Pd = f"{round(Pd):,}".replace(",", ".")  # Làm tròn & thêm dấu chấm ngăn cách
+        st.success(f"🔸 Pd cần thiết sau {time_required} là: **{formatted_Pd} W**")
 
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ Không có model nào phù hợp với yêu cầu.")
         else:
             st.info("✅ Các model phù hợp:")
-            st.table(model_phu_hop.reset_index().rename(columns={"index": "Model", 0: "Công suất (W)"}))
+            result_df = model_phu_hop.reset_index()
+            result_df.columns = ["Model", "Công suất (W)"]
+            result_df["Công suất (W)"] = result_df["Công suất (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+            st.table(result_df)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi: {e}")
