@@ -46,12 +46,11 @@ if uploaded_file:
             st.error("❌ None matching batteries.")
         else:
             st.success("✅ Appropriate batteries:")
-            st.markdown(result_df.to_html(), unsafe_allow_html=True)
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
             result_df.insert(0, "No.", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
-
+            st.markdown(result_df.to_html(), unsafe_allow_html=True)
             # Tạo bảng HTML với style căn giữa
             styled_table = result_df.style.set_table_styles([
                 {"selector": "th", "props": [("text-align", "center")]},
