@@ -23,14 +23,7 @@ st.markdown("<h1 style='color: limegreen;'>🔋 Calculate Pd & Find appropriate 
 st.markdown("<p style='color: red;'>❗Input parameters and upload the compiled Excel file for calculation.</p>", unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown(
-        """
-        <div style="text-align: center;">
-            <img src="Picture1.png" width="100">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )  # 👈 hiện logo trước các input
+    st.image("Picture1.png", width=150) # 👈 hiện logo trước các input
     st.header("🧮 Enter parameters")
     P_load = st.number_input("🔢 Power Load", value=180000)
     FP = st.number_input("⚙️ Output Power Factor", value=0.7)
