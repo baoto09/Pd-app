@@ -26,7 +26,7 @@ with st.sidebar:
     st.markdown(
         """
         <div style="text-align: center; margin-bottom: 10px;">
-            <img src="Picture1.png" width="150">
+            <img src="Picture1.png" width="100">
         </div>
         """,
         unsafe_allow_html=True
