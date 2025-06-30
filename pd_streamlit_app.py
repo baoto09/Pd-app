@@ -59,5 +59,5 @@ if uploaded_file:
             ]).hide(axis="index")
 
 
-else:
-    st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
+        else:
+        st.warning("⬅️ Vui lòng tải file Excel để bắt đầu.")
