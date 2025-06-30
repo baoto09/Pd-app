@@ -44,7 +44,7 @@ if uploaded_file:
         model_phu_hop = model(df, Pd, time_required, margin)
         if model_phu_hop is None or model_phu_hop.empty:
     st.error("❌ None matching batteries.")
-else:
+    else:
     # Chuẩn bị bảng
     result_df = model_phu_hop.reset_index()
     result_df.columns = ["Batteries", "Power (W)"]
