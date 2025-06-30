@@ -43,30 +43,24 @@ if uploaded_file:
 
         model_phu_hop = model(df, Pd, time_required, margin)
 if model_phu_hop is None or model_phu_hop.empty:
-    st.error("❌ None batteries matched with requirements.")
-else:
-    # Chuẩn bị bảng có STT
-    result_df = model_phu_hop.reset_index()
-    result_df.columns = ["Batteries", "Power (W)"]
-    result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-    result_df.insert("No.", range(1, len(result_df) + 1))  # Số thứ tự từ 1
+            st.error("❌ None matching batteries.")
+        else:
+            # Tạo bảng kết quả có STT
+            st.info("✅ Appropriate batteries:")
+            result_df = model_phu_hop.reset_index()
+            result_df.columns = ["Batteries", "Power (W)"]
+            result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+            result_df.insert(0, "STT", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
 
-    # Tạo bảng HTML có style căn giữa
-    styled_table = result_df.style.set_table_styles([
-        {"selector": "th", "props": [("text-align", "center")]},
-        {"selector": "td", "props": [("text-align", "center")]}
-    ]).hide(axis="index")
+            # Tạo bảng HTML với style căn giữa
+            styled_table = result_df.style.set_table_styles([
+                {"selector": "th", "props": [("text-align", "center")]},
+                {"selector": "td", "props": [("text-align", "center")]}
+            ]).hide(axis="index")
 
-    # Dùng HTML giả lập khung xanh biển chứa bảng
-    html_output = f"""
-    <div style="border-radius: 0.5rem; background-color: #1e3a5f; padding: 1rem; color: white;">
-        <div style="font-size: 1rem; font-weight: bold; margin-bottom: 10px;">
-            ✅ Appropriate batteries:
-        </div>
-        {styled_table.to_html()}
-    </div>
-    """
-    st.markdown(html_output, unsafe_allow_html=True)
+            # Hiển thị bảng trong khung xanh biển
+            with st.info("✅ Appropriate batteries:", icon="✅"):
+                st.markdown(styled_table.to_html(), unsafe_allow_html=True)
     
     except Exception as e:
         st.error(f"⚠️ Lỗi: {e}")
