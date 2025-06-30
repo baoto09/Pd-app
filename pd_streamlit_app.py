@@ -50,7 +50,7 @@ if uploaded_file:
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-            result_df.insert(0, "STT", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
+            result_df.insert(0, "No.", range(1, len(result_df) + 1))  # Thêm cột STT từ 1
 
             # Tạo bảng HTML với style căn giữa
             styled_table = result_df.style.set_table_styles([
