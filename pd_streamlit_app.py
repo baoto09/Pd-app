@@ -45,11 +45,19 @@ if uploaded_file:
         if model_phu_hop is None or model_phu_hop.empty:
             st.error("❌ Không có model nào phù hợp với yêu cầu.")
         else:
-            st.info("✅ Các model phù hợp:")
             result_df = model_phu_hop.reset_index()
+            result_df.index = result_df.index + 1  # Số thứ tự bắt đầu từ 1
             result_df.columns = ["Model", "Công suất (W)"]
             result_df["Công suất (W)"] = result_df["Công suất (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
-            st.table(result_df)
+
+            # Hiển thị trong st.info() + style căn giữa
+            with st.container():
+                st.info("✅ Các model phù hợp:")
+                styled_table = result_df.style.set_table_styles([
+                    {"selector": "th", "props": [("text-align", "center")]},
+                    {"selector": "td", "props": [("text-align", "center")]}
+                ]).hide(axis="index")
+                st.write(styled_table.to_html(), unsafe_allow_html=True)
 
     except Exception as e:
         st.error(f"⚠️ Lỗi: {e}")
