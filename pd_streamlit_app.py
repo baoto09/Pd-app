@@ -46,6 +46,7 @@ if uploaded_file:
             st.error("❌ None matching batteries.")
         else:
             # Chuẩn bị bảng
+            st.info("✅ Appropriate batteries:")
             result_df = model_phu_hop.reset_index()
             result_df.columns = ["Batteries", "Power (W)"]
             result_df["Power (W)"] = result_df["Power (W)"].apply(lambda x: f"{int(x):,}".replace(",", "."))
