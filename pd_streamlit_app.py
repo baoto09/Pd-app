@@ -59,7 +59,7 @@ if uploaded_file:
             ]).hide(axis="index")
 
             # Hiển thị bảng trong khung xanh biển
-            with st.info("✅ Appropriate batteries:", icon="✅"):
+        with st.info("✅ Appropriate batteries:", icon="✅"):
                 st.markdown(styled_table.to_html(), unsafe_allow_html=True)
     
     except Exception as e:
