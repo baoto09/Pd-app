@@ -57,7 +57,7 @@ if uploaded_file:
             ]).hide(axis="index")
     
         # ✅ DÒNG QUAN TRỌNG NHẤT: cả tiêu đề và bảng nằm chung trong st.info()
-            with st.info("", icon="✅"):
+            with st.info("✅ Appropriate batteries:"):
                 st.markdown("### Appropriate batteries:")
                 st.markdown(styled_table.to_html(), unsafe_allow_html=True)
 
